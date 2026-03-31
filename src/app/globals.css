@@ -39,7 +39,7 @@
 
 html,
 body {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', 'SF Mono', monospace;
+  font-family: 'Maple Mono', 'Fira Code', 'Consolas', 'Monaco', 'SF Mono', monospace;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-size: 14px;

@@ -2,7 +2,7 @@ node_modules/
 .next/
 .crush/
 out/
-public/
+public/images
 content/products/
 .DS_Store
 *.log
