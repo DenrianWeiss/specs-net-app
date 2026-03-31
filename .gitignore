@@ -1,0 +1,8 @@
+node_modules/
+.next/
+.crush/
+out/
+public/
+content/products/
+.DS_Store
+*.log

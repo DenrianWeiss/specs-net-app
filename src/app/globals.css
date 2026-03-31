@@ -1,0 +1,85 @@
+:root {
+  /* Catppuccin-inspired Modern Terminal Theme */
+  /* Base colors - Black/Grey background */
+  --bg-primary: #1e1e2e;
+  --bg-secondary: #252537;
+  --bg-tertiary: #313244;
+  --bg-hover: #3a3a4e;
+  
+  /* Surface colors */
+  --surface-dark: #11111b;
+  --surface-mid: #181825;
+  
+  /* Border colors - subtle greys */
+  --border-color: #6c7086;
+  --border-dim: #45475a;
+  --border-hover: #9399b2;
+  
+  /* Text colors - white/light grey */
+  --text-primary: #cdd6f4;
+  --text-secondary: #a6adc8;
+  --text-muted: #6c7086;
+  --text-subtle: #585b70;
+  
+  /* Accent - minimal, subtle blue for links only */
+  --accent-primary: #89b4fa;
+  --accent-secondary: #b4befe;
+  
+  /* Semantic colors - muted */
+  --success: #a6e3a1;
+  --warning: #f9e2af;
+  --error: #f38ba8;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', 'SF Mono', monospace;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--accent-primary);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--accent-secondary);
+  text-decoration: underline;
+}
+
+::selection {
+  background: var(--accent-primary);
+  color: var(--surface-dark);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-dim);
+  border: 2px solid var(--bg-secondary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-color);
+}
