@@ -3,6 +3,6 @@ node_modules/
 .crush/
 out/
 public/images
-content/products/
+content/
 .DS_Store
 *.log

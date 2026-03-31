@@ -73,9 +73,17 @@ export default function ProductPage({ params }: PageProps) {
         <nav className="tui-breadcrumb">
           <a href="/">home</a>
           <span className="tui-breadcrumb-sep">/</span>
-          {product.category && (
+          {(product.category || product.categories) && (
             <>
-              <a href={`/#category-${product.category.replace(/\s+/g, '-')}`}>{product.category}</a>
+              {product.category && (
+                <a href={`/#category-${product.category.replace(/\s+/g, '-')}`}>{product.category}</a>
+              )}
+              {product.categories?.map((cat, idx) => (
+                <span key={cat}>
+                  {product.category || idx > 0 ? <span className="tui-breadcrumb-sep">,</span> : null}
+                  <a href={`/#category-${cat.replace(/\s+/g, '-')}`}>{cat}</a>
+                </span>
+              ))}
               <span className="tui-breadcrumb-sep">/</span>
             </>
           )}
@@ -110,10 +118,17 @@ export default function ProductPage({ params }: PageProps) {
                 <span className="tui-label">id</span>
                 <span className="tui-value">{product.id}</span>
               </div>
-              {product.category && (
+              {(product.category || product.categories) && (
                 <div className="tui-product-category">
                   <span className="tui-label">category</span>
-                  <span className="tui-value">{product.category}</span>
+                  <span className="tui-value">
+                    {product.category}
+                    {product.categories?.map((cat, idx) => (
+                      <span key={cat}>
+                        {product.category || idx > 0 ? ', ' : ''}{cat}
+                      </span>
+                    ))}
+                  </span>
                 </div>
               )}
             </div>
@@ -320,6 +335,9 @@ name: ${product.name}${product.category ? `\ncategory: ${product.category}` : ''
 ${Object.entries(product.specs).map(([k, v]) => {
   if (Array.isArray(v)) {
     return `${k}:\n${v.map(item => `  - ${item}`).join('\n')}`;
+  }
+  if (typeof v === 'object' && v !== null) {
+    return `${k}:\n${Object.entries(v).map(([sk, sv]) => `  ${sk}: ${sv}`).join('\n')}`;
   }
   return `${k}: ${v}`;
 }).join('\n')}

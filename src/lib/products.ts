@@ -1,9 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { Product, ProductIndex, ProcessedImage } from './types';
+import { Product, ProductIndex, ProcessedImage, HomePageContent } from './types';
 
 const contentDirectory = path.join(process.cwd(), 'content/products');
+const rootContentDirectory = path.join(process.cwd(), 'content');
 const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif'];
 
 function sanitizeId(filename: string): string {
@@ -133,14 +134,14 @@ export function getAllProducts(): Product[] {
     }
 
     return {
+      ...data,
       id,
       name: data.name || path.basename(filePath),
       image: images[0],
       images: images.length > 0 ? images : undefined,
       description: data.description || content.trim(),
       category: data.category,
-      specs,
-      ...data
+      specs
     };
   });
 }
@@ -154,9 +155,13 @@ export function getProductIndex(): ProductIndex[] {
   const products = getAllProducts();
 
   return products.map(product => {
+    const categoryParts = [
+      product.category || '',
+      ...(product.categories || [])
+    ];
     const searchParts = [
       product.name,
-      product.category || '',
+      ...categoryParts,
       Object.entries(product.specs).map(([k, v]) => `${k}: ${v}`).join(' '),
       product.description || ''
     ];
@@ -165,6 +170,7 @@ export function getProductIndex(): ProductIndex[] {
       id: product.id,
       name: product.name,
       category: product.category,
+      categories: product.categories,
       searchContent: searchParts.join(' ').toLowerCase()
     };
   });
@@ -178,6 +184,9 @@ export function getCategories(): string[] {
     if (p.category) {
       categories.add(p.category);
     }
+    if (p.categories) {
+      p.categories.forEach(cat => categories.add(cat));
+    }
   });
 
   return Array.from(categories).sort();
@@ -185,7 +194,11 @@ export function getCategories(): string[] {
 
 export function getProductsByCategory(category: string): Product[] {
   const products = getAllProducts();
-  return products.filter(p => p.category === category);
+  return products.filter(p => {
+    if (p.category === category) return true;
+    if (p.categories?.includes(category)) return true;
+    return false;
+  });
 }
 
 // Image processing utilities for build time
@@ -193,12 +206,25 @@ export function getImageProcessingList(): ProcessedImage[] {
   const products = getAllProducts();
   const imagesToProcess: ProcessedImage[] = [];
 
+  // Get all markdown files to map IDs back to paths
+  const allMarkdownFiles = getAllMarkdownFiles(contentDirectory);
+  const idToPathMap = new Map<string, string>();
+  for (const filePath of allMarkdownFiles) {
+    const id = generateProductId(filePath, contentDirectory);
+    const dirPath = path.dirname(filePath);
+    const baseName = path.basename(filePath, '.md');
+    // Image directory is same name as markdown file in its directory
+    const imageDir = path.join(dirPath, baseName);
+    idToPathMap.set(id, imageDir);
+  }
+
   for (const product of products) {
-    // Support nested paths
-    let productImageDir = path.join(contentDirectory, product.id);
+    // Try to get the image directory from the ID map
+    let productImageDir = idToPathMap.get(product.id);
     
-    if (!fs.existsSync(productImageDir)) {
-      productImageDir = path.join(contentDirectory, ...product.id.split('/'));
+    if (!productImageDir || !fs.existsSync(productImageDir)) {
+      // Fall back to direct ID (for backward compatibility)
+      productImageDir = path.join(contentDirectory, product.id);
     }
 
     if (!fs.existsSync(productImageDir)) continue;
@@ -227,4 +253,28 @@ export function getImageProcessingList(): ProcessedImage[] {
   }
 
   return imagesToProcess;
+}
+
+// Home page content utilities
+export function getHomePageContent(): HomePageContent | null {
+  const indexPath = path.join(rootContentDirectory, 'index.md');
+  
+  if (!fs.existsSync(indexPath)) {
+    return null;
+  }
+  
+  try {
+    const fileContent = fs.readFileSync(indexPath, 'utf-8');
+    const { data, content } = matter(fileContent);
+    
+    return {
+      title: data.title || 'PanduSpec',
+      subtitle: data.subtitle,
+      description: data.description,
+      content: content.trim(),
+      ...data
+    };
+  } catch {
+    return null;
+  }
 }

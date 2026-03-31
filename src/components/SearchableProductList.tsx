@@ -21,13 +21,17 @@ export function SearchableProductList({ products, categories, productIndex }: Se
   const productsByCategory = useMemo(() => {
     const grouped: Record<string, Product[]> = {};
     categories.forEach(category => {
-      grouped[category] = products.filter(p => p.category === category);
+      grouped[category] = products.filter(p => {
+        if (p.category === category) return true;
+        if (p.categories?.includes(category)) return true;
+        return false;
+      });
     });
     return grouped;
   }, [products, categories]);
 
-  const uncategorizedProducts = useMemo(() => 
-    products.filter(p => !p.category),
+  const uncategorizedProducts = useMemo(() =>
+    products.filter(p => !p.category && !p.categories),
   [products]);
 
   // Handle search
@@ -226,11 +230,12 @@ export function SearchableProductList({ products, categories, productIndex }: Se
           ) : (
             <div className="tui-product-list">
               {searchResults.map(p => (
-                <CompactProductCard 
-                  key={p.id} 
-                  id={p.id} 
-                  name={p.name} 
-                  category={p.category} 
+                <CompactProductCard
+                  key={p.id}
+                  id={p.id}
+                  name={p.name}
+                  category={p.category}
+                  categories={p.categories}
                 />
               ))}
             </div>
@@ -315,15 +320,17 @@ interface CompactProductCardProps {
   id: string;
   name: string;
   category?: string;
+  categories?: string[];
 }
 
-function CompactProductCard({ id, name, category }: CompactProductCardProps) {
+function CompactProductCard({ id, name, category, categories }: CompactProductCardProps) {
+  const displayCategory = category || categories?.[0];
   return (
     <a href={`/product/${id}/`} className="tui-product-card-link">
       <div className="tui-product-card compact">
         <div className="tui-card-header">
           <span className="tui-card-title">{name}</span>
-          {category && <span className="tui-card-category">{category}</span>}
+          {displayCategory && <span className="tui-card-category">{displayCategory}</span>}
         </div>
         <div className="tui-card-content">
           <div className="tui-card-specs-preview">

@@ -11,14 +11,18 @@ export function ProductCard({ product, compact = false }: ProductCardProps) {
   const specCount = Object.keys(product.specs).length;
   const imageCount = product.images?.length || (product.image ? 1 : 0);
   const firstImage = product.images?.[0] || product.image;
-  
+  const displayCategory = product.category || product.categories?.[0];
+  const categoryCount = (product.categories?.length || 0) + (product.category ? 1 : 0);
+
   return (
     <Link href={`/product/${product.id}/`} className="tui-product-card-link">
       <div className={`tui-product-card ${compact ? 'compact' : ''}`}>
         <div className="tui-card-header">
           <span className="tui-card-title">{product.name}</span>
-          {product.category && (
-            <span className="tui-card-category">{product.category}</span>
+          {displayCategory && (
+            <span className="tui-card-category">
+              {displayCategory}{categoryCount > 1 ? ` +${categoryCount - 1}` : ''}
+            </span>
           )}
         </div>
         <div className="tui-card-content">

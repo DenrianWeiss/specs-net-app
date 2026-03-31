@@ -1,21 +1,27 @@
 import React from 'react';
 
 interface SpecTableProps {
-  specs: Record<string, string | number | boolean | string[]>;
+  specs: Record<string, unknown>;
   title?: string;
 }
 
-function formatValue(value: string | number | boolean | string[]): string {
+function formatValue(value: unknown): string {
   if (Array.isArray(value)) {
     return value.join(', ');
+  }
+  if (typeof value === 'object' && value !== null) {
+    return Object.entries(value)
+      .map(([k, v]) => `${k}: ${formatValue(v)}`)
+      .join('; ');
   }
   return String(value);
 }
 
-function getValueType(value: string | number | boolean | string[]): string {
+function getValueType(value: unknown): string {
   if (typeof value === 'boolean') return 'bool';
   if (typeof value === 'number') return 'num';
   if (Array.isArray(value)) return 'list';
+  if (typeof value === 'object' && value !== null) return 'obj';
   return 'str';
 }
 

@@ -42,6 +42,8 @@ export function Header({
             <Link href="/#categories">categories</Link>
             <span className="tui-nav-sep">/</span>
             <Link href="/#all">products</Link>
+            <span className="tui-nav-sep">/</span>
+            <Link href="/coremark">coremark</Link>
           </nav>
         </div>
       </div>
