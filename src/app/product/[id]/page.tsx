@@ -3,11 +3,16 @@ import { notFound } from 'next/navigation';
 import { Header, Box, SpecTable } from '@/components';
 import { getAllProducts, getProductById } from '@/lib/products';
 
+// Force static generation for all product pages
+export const dynamic = 'error';
+export const dynamicParams = false;
+
 interface PageProps {
   params: { id: string };
 }
 
-export async function generateStaticParams() {
+// Generate static paths for all products at build time
+export function generateStaticParams() {
   const products = getAllProducts();
   return products.map(product => ({
     id: product.id,
