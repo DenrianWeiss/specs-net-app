@@ -91,48 +91,6 @@ export function SearchableProductList({ products, categories, productIndex }: Se
             {view === 'category' && `${categoryProducts.length} items`}
           </div>
         </div>
-        <style>{`
-          .tui-search-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-          }
-          .tui-search-prompt {
-            color: var(--text-muted);
-            font-weight: bold;
-          }
-          .tui-search-input-main {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-dim);
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 14px;
-            padding: 8px 12px;
-            flex: 1;
-            min-width: 200px;
-            outline: none;
-            transition: border-color 0.15s;
-          }
-          .tui-search-input-main:focus {
-            border-color: var(--border-color);
-          }
-          .tui-search-input-main::placeholder {
-            color: var(--text-subtle);
-          }
-          .tui-cursor {
-            color: var(--accent-primary);
-            animation: blink 1s step-end infinite;
-          }
-          @keyframes blink {
-            50% { opacity: 0; }
-          }
-          .tui-search-count {
-            color: var(--text-muted);
-            font-size: 12px;
-            margin-left: auto;
-          }
-        `}</style>
       </Box>
 
       {categories.length > 0 && (
@@ -153,47 +111,6 @@ export function SearchableProductList({ products, categories, productIndex }: Se
               );
             })}
           </div>
-          <style>{`
-            .tui-categories {
-              display: flex;
-              flex-wrap: wrap;
-              gap: 8px;
-            }
-            .tui-category-link {
-              display: flex;
-              align-items: center;
-              gap: 8px;
-              padding: 6px 12px;
-              background: var(--bg-tertiary);
-              border: 1px solid var(--border-dim);
-              color: var(--text-secondary);
-              transition: all 0.15s;
-              cursor: pointer;
-              font-family: inherit;
-              font-size: inherit;
-            }
-            .tui-category-link:hover {
-              border-color: var(--border-color);
-              background: var(--bg-hover);
-              text-decoration: none;
-              color: var(--text-primary);
-            }
-            .tui-category-link.active {
-              border-color: var(--border-color);
-              background: var(--bg-primary);
-              color: var(--text-primary);
-            }
-            .tui-category-name {
-              font-weight: 500;
-            }
-            .tui-category-count {
-              color: var(--text-muted);
-              font-size: 12px;
-              background: var(--bg-secondary);
-              padding: 2px 6px;
-              border-radius: 3px;
-            }
-          `}</style>
         </Box>
       )}
 
@@ -205,19 +122,6 @@ export function SearchableProductList({ products, categories, productIndex }: Se
               <p>Or click a category to browse products.</p>
             </div>
           </Box>
-          <style>{`
-            .tui-empty-state {
-              margin-top: 16px;
-            }
-            .tui-empty-content {
-              color: var(--text-muted);
-              text-align: center;
-              padding: 32px 16px;
-            }
-            .tui-empty-content p {
-              margin: 8px 0;
-            }
-          `}</style>
         </div>
       )}
 
@@ -240,23 +144,6 @@ export function SearchableProductList({ products, categories, productIndex }: Se
               ))}
             </div>
           )}
-          <style>{`
-            .tui-product-list {
-              display: grid;
-              grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-              gap: 12px;
-            }
-            @media (max-width: 600px) {
-              .tui-product-list {
-                grid-template-columns: 1fr;
-              }
-            }
-            .tui-no-results {
-              color: var(--text-muted);
-              text-align: center;
-              padding: 32px 16px;
-            }
-          `}</style>
         </Box>
       )}
 
@@ -268,47 +155,6 @@ export function SearchableProductList({ products, categories, productIndex }: Se
               <ProductCard key={product.id} product={product} compact />
             ))}
           </div>
-          <style>{`
-            .tui-category-view-box {
-              margin: 16px 0;
-              border: 1px solid var(--border-color);
-              position: relative;
-              min-width: 0;
-              padding: 20px 16px 16px 16px;
-              background: var(--bg-secondary);
-            }
-            .tui-category-view-box::before {
-              content: '';
-              position: absolute;
-              top: -1px;
-              left: 16px;
-              right: 16px;
-              height: 1px;
-              background: var(--bg-primary);
-            }
-            .tui-category-view-title {
-              position: absolute;
-              top: -10px;
-              left: 24px;
-              background: var(--bg-primary);
-              padding: 0 8px;
-              color: var(--text-primary);
-              font-weight: bold;
-              font-size: 13px;
-              text-transform: uppercase;
-              letter-spacing: 0.5px;
-            }
-            .tui-product-list {
-              display: grid;
-              grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-              gap: 12px;
-            }
-            @media (max-width: 600px) {
-              .tui-product-list {
-                grid-template-columns: 1fr;
-              }
-            }
-          `}</style>
         </div>
       )}
     </>
@@ -342,92 +188,6 @@ function CompactProductCard({ id, name, category, categories }: CompactProductCa
           <span className="tui-card-id">{id}</span>
         </div>
       </div>
-      <style>{`
-        .tui-product-card-link {
-          display: block;
-          text-decoration: none;
-        }
-        .tui-product-card {
-          border: 1px solid var(--border-dim);
-          transition: all 0.15s ease;
-          position: relative;
-          background: var(--bg-secondary);
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-        }
-        .tui-product-card:hover {
-          border-color: var(--border-color);
-          background: var(--bg-hover);
-        }
-        .tui-product-card:hover .tui-card-title {
-          color: var(--accent-primary);
-        }
-        .tui-card-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 12px;
-          padding: 12px 14px;
-          border-bottom: 1px solid var(--border-dim);
-          min-width: 0;
-        }
-        .tui-card-title {
-          color: var(--text-primary);
-          font-weight: bold;
-          font-size: 14px;
-          flex: 1;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          min-width: 0;
-        }
-        .tui-card-category {
-          color: var(--text-muted);
-          font-size: 11px;
-          flex-shrink: 0;
-          background: var(--bg-tertiary);
-          padding: 2px 8px;
-          border-radius: 3px;
-          max-width: 120px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-        .tui-card-content {
-          padding: 10px 14px;
-          flex: 1;
-          min-height: 0;
-        }
-        .tui-card-specs-preview {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-        .tui-spec-label {
-          color: var(--text-muted);
-          font-size: 11px;
-        }
-        .tui-spec-count {
-          color: var(--text-primary);
-          font-size: 11px;
-          font-weight: bold;
-        }
-        .tui-card-footer {
-          padding: 8px 14px;
-          border-top: 1px solid var(--border-dim);
-          background: var(--bg-tertiary);
-          margin-top: auto;
-        }
-        .tui-card-id {
-          color: var(--text-subtle);
-          font-size: 10px;
-          font-family: inherit;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-      `}</style>
     </a>
   );
 }

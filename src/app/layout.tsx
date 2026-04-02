@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './components.css';
 
 export const metadata: Metadata = {
   title: 'PanduSpec - Product Specification Database',
